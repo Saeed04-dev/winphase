@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>นโยบายความเป็นส่วนตัว | WinPhrase - Text Expander สำหรับ Windows</title>
+
+    <meta name="description" content="นโยบายความเป็นส่วนตัวของ WinPhrase โปรแกรมคีย์ลัดอัจฉริยะสำหรับ Windows เราให้ความสำคัญกับความเป็นส่วนตัวของผู้ใช้งาน">
+
+    <link rel="canonical" href="https://winphrase.app/privacy">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #0078D4;
+            --primary-dark: #005A9E;
+            --accent: #00B294;
+            --bg-dark: #0A0E17;
+            --bg-card: #111827;
+            --text-primary: #F9FAFB;
+            --text-secondary: #9CA3AF;
+            --gradient-2: linear-gradient(135deg, #0078D4 0%, #00B294 100%);
+            --gradient-mesh: radial-gradient(at 40% 20%, hsla(212,100%,50%,0.15) 0px, transparent 50%),
+                            radial-gradient(at 80% 0%, hsla(174,100%,50%,0.1) 0px, transparent 50%),
+                            radial-gradient(at 0% 50%, hsla(270,100%,50%,0.1) 0px, transparent 50%);
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans Thai', -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        .bg-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-mesh);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 16px 0;
+            background: rgba(10, 14, 23, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .btn-nav {
+            background: var(--gradient-2);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 120, 212, 0.3);
+        }
+
+        .content {
+            padding: 140px 0 80px;
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .last-updated {
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-size: 0.9rem;
+        }
+
+        .policy-content {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 40px;
+        }
+
+        h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            margin-top: 40px;
+            margin-bottom: 16px;
+            color: var(--accent);
+        }
+
+        h2:first-child {
+            margin-top: 0;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        ul {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            padding-left: 24px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        strong {
+            color: var(--text-primary);
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-copy {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 640px) {
+            .policy-content {
+                padding: 24px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-mesh"></div>
+
+    <nav>
+        <div class="container">
+            <a href="/" class="logo">WinPhrase</a>
+            <a href="https://apps.microsoft.com/detail/9n48hb315xjx?hl=th-TH&gl=TH" target="_blank" class="btn-nav">ดาวน์โหลดฟรี</a>
+        </div>
+    </nav>
+
+    <main class="content">
+        <div class="container">
+            <h1>นโยบายความเป็นส่วนตัว</h1>
+            <p class="last-updated">อัปเดตล่าสุด: กุมภาพันธ์ 2025</p>
+
+            <div class="policy-content">
+                <h2>1. บทนำ</h2>
+                <p>
+                    WinPhrase ("เรา", "ของเรา") ให้ความสำคัญกับความเป็นส่วนตัวของผู้ใช้งานเป็นอย่างยิ่ง
+                    นโยบายความเป็นส่วนตัวนี้อธิบายถึงวิธีการเก็บรวบรวม ใช้ และปกป้องข้อมูลของคุณ
+                    เมื่อคุณใช้งานแอปพลิเคชัน WinPhrase
+                </p>
+
+                <h2>2. ข้อมูลที่เราเก็บรวบรวม</h2>
+                <p>
+                    <strong>WinPhrase ไม่เก็บรวบรวมข้อมูลส่วนบุคคลใดๆ</strong> แอปพลิเคชันของเราทำงานแบบออฟไลน์ทั้งหมด และข้อมูลทั้งหมดจะถูกเก็บไว้ในเครื่องของคุณเท่านั้น
+                </p>
+                <ul>
+                    <li><strong>ข้อมูลคีย์ลัดและข้อความ:</strong> ข้อความและคีย์ลัดที่คุณสร้างจะถูกเก็บไว้ในเครื่องของคุณเท่านั้น ไม่มีการส่งไปยังเซิร์ฟเวอร์ภายนอก</li>
+                    <li><strong>การตั้งค่า:</strong> การตั้งค่าทั้งหมดจะถูกเก็บไว้ในเครื่องของคุณ</li>
+                    <li><strong>ไม่มีการติดตาม:</strong> เราไม่ใช้ cookies, analytics หรือระบบติดตามใดๆ ในแอปพลิเคชัน</li>
+                </ul>
+
+                <h2>3. การใช้ข้อมูล</h2>
+                <p>
+                    เนื่องจากเราไม่เก็บรวบรวมข้อมูลใดๆ จึงไม่มีการใช้ข้อมูลของคุณในทางใดๆ
+                    ข้อมูลทั้งหมดอยู่ภายใต้การควบคุมของคุณเท่านั้น
+                </p>
+
+                <h2>4. การแชร์ข้อมูล</h2>
+                <p>
+                    เราไม่แชร์ ขาย หรือถ่ายโอนข้อมูลของคุณให้กับบุคคลที่สาม
+                    เนื่องจากเราไม่มีการเก็บรวบรวมข้อมูลตั้งแต่แรก
+                </p>
+
+                <h2>5. ความปลอดภัยของข้อมูล</h2>
+                <p>
+                    แม้ว่าเราจะไม่เก็บรวบรวมข้อมูลของคุณ แต่เราออกแบบแอปพลิเคชันให้มีความปลอดภัยสูงสุด:
+                </p>
+                <ul>
+                    <li>แอปพลิเคชันผ่านการตรวจสอบความปลอดภัยจาก Microsoft Store</li>
+                    <li>ไม่มีการเชื่อมต่ออินเทอร์เน็ตที่ไม่จำเป็น</li>
+                    <li>ข้อมูลทั้งหมดเก็บไว้ในเครื่องของคุณเท่านั้น</li>
+                </ul>
+
+                <h2>6. สิทธิ์ของผู้ใช้งาน</h2>
+                <p>
+                    คุณมีสิทธิ์เต็มที่ในการควบคุมข้อมูลของคุณ:
+                </p>
+                <ul>
+                    <li>ลบข้อมูลทั้งหมดได้โดยการถอนการติดตั้งแอปพลิเคชัน</li>
+                    <li>แก้ไขหรือลบคีย์ลัดและข้อความได้ตลอดเวลาภายในแอป</li>
+                    <li>ส่งออกหรือสำรองข้อมูลได้ตามต้องการ</li>
+                </ul>
+
+                <h2>7. การเปลี่ยนแปลงนโยบาย</h2>
+                <p>
+                    เราอาจปรับปรุงนโยบายความเป็นส่วนตัวนี้เป็นครั้งคราว
+                    หากมีการเปลี่ยนแปลงที่สำคัญ เราจะแจ้งให้ทราบผ่านแอปพลิเคชันหรือเว็บไซต์
+                </p>
+
+                <h2>8. ติดต่อเรา</h2>
+                <p>
+                    หากคุณมีคำถามเกี่ยวกับนโยบายความเป็นส่วนตัวนี้ สามารถติดต่อเราได้ที่:
+                </p>
+                <ul>
+                    <li>Email: <a href="mailto:support@winphrase.app">support@winphrase.app</a></li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <a href="/" class="logo">WinPhrase</a>
+            <ul class="footer-links">
+                <li><a href="/privacy">นโยบายความเป็นส่วนตัว</a></li>
+                <li><a href="/terms">ข้อกำหนดการใช้งาน</a></li>
+                <li><a href="mailto:support@winphrase.app">ติดต่อเรา</a></li>
+            </ul>
+            <p class="footer-copy">© 2025 WinPhrase. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

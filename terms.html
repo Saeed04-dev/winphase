@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ข้อกำหนดการใช้งาน | WinPhrase - Text Expander สำหรับ Windows</title>
+
+    <meta name="description" content="ข้อกำหนดและเงื่อนไขการใช้งาน WinPhrase โปรแกรมคีย์ลัดอัจฉริยะสำหรับ Windows">
+
+    <link rel="canonical" href="https://winphrase.app/terms">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #0078D4;
+            --primary-dark: #005A9E;
+            --accent: #00B294;
+            --bg-dark: #0A0E17;
+            --bg-card: #111827;
+            --text-primary: #F9FAFB;
+            --text-secondary: #9CA3AF;
+            --gradient-2: linear-gradient(135deg, #0078D4 0%, #00B294 100%);
+            --gradient-mesh: radial-gradient(at 40% 20%, hsla(212,100%,50%,0.15) 0px, transparent 50%),
+                            radial-gradient(at 80% 0%, hsla(174,100%,50%,0.1) 0px, transparent 50%),
+                            radial-gradient(at 0% 50%, hsla(270,100%,50%,0.1) 0px, transparent 50%);
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans Thai', -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        .bg-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-mesh);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 16px 0;
+            background: rgba(10, 14, 23, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .btn-nav {
+            background: var(--gradient-2);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 120, 212, 0.3);
+        }
+
+        .content {
+            padding: 140px 0 80px;
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .last-updated {
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-size: 0.9rem;
+        }
+
+        .terms-content {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 40px;
+        }
+
+        h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            margin-top: 40px;
+            margin-bottom: 16px;
+            color: var(--accent);
+        }
+
+        h2:first-child {
+            margin-top: 0;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        ul, ol {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            padding-left: 24px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        strong {
+            color: var(--text-primary);
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-copy {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 640px) {
+            .terms-content {
+                padding: 24px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-mesh"></div>
+
+    <nav>
+        <div class="container">
+            <a href="/" class="logo">WinPhrase</a>
+            <a href="https://apps.microsoft.com/detail/9n48hb315xjx?hl=th-TH&gl=TH" target="_blank" class="btn-nav">ดาวน์โหลดฟรี</a>
+        </div>
+    </nav>
+
+    <main class="content">
+        <div class="container">
+            <h1>ข้อกำหนดการใช้งาน</h1>
+            <p class="last-updated">อัปเดตล่าสุด: กุมภาพันธ์ 2025</p>
+
+            <div class="terms-content">
+                <h2>1. การยอมรับข้อกำหนด</h2>
+                <p>
+                    โดยการดาวน์โหลด ติดตั้ง หรือใช้งานแอปพลิเคชัน WinPhrase ("แอป")
+                    คุณยอมรับและตกลงที่จะปฏิบัติตามข้อกำหนดและเงื่อนไขเหล่านี้
+                    หากคุณไม่ยอมรับข้อกำหนดเหล่านี้ กรุณาอย่าใช้งานแอป
+                </p>
+
+                <h2>2. สิทธิ์การใช้งาน</h2>
+                <p>
+                    WinPhrase ให้สิทธิ์แก่คุณในการใช้งานแอปพลิเคชันภายใต้เงื่อนไขดังนี้:
+                </p>
+                <ul>
+                    <li>สิทธิ์การใช้งานเป็นแบบไม่จำกัดเฉพาะตัว (non-exclusive) และเพิกถอนได้</li>
+                    <li>คุณสามารถใช้งานแอปเพื่อวัตถุประสงค์ส่วนบุคคลหรือเชิงพาณิชย์ได้</li>
+                    <li>คุณไม่ได้รับสิทธิ์ในการทำวิศวกรรมย้อนกลับ ถอดรหัส หรือแก้ไขแอป</li>
+                    <li>คุณไม่ได้รับสิทธิ์ในการแจกจ่ายซ้ำหรือขายแอปให้กับบุคคลอื่น</li>
+                </ul>
+
+                <h2>3. คุณสมบัติของแอป</h2>
+                <p>
+                    WinPhrase เป็นเครื่องมือเพิ่มประสิทธิภาพการพิมพ์ที่ให้คุณ:
+                </p>
+                <ul>
+                    <li>สร้างและจัดการคีย์ลัด (Hotkeys) สำหรับข้อความที่ใช้บ่อย</li>
+                    <li>ขยายข้อความอัตโนมัติด้วยคีย์ลัดที่กำหนดเอง</li>
+                    <li>ใช้งานข้ามแอปพลิเคชันต่างๆ บน Windows</li>
+                </ul>
+
+                <h2>4. ข้อจำกัดการใช้งาน</h2>
+                <p>
+                    คุณตกลงที่จะไม่ใช้แอปเพื่อ:
+                </p>
+                <ul>
+                    <li>ละเมิดกฎหมายหรือข้อบังคับใดๆ</li>
+                    <li>รบกวนการทำงานของระบบคอมพิวเตอร์หรือเครือข่ายของผู้อื่น</li>
+                    <li>สร้างหรือเผยแพร่เนื้อหาที่เป็นอันตราย ผิดกฎหมาย หรือไม่เหมาะสม</li>
+                    <li>ละเมิดสิทธิ์ทรัพย์สินทางปัญญาของผู้อื่น</li>
+                </ul>
+
+                <h2>5. ทรัพย์สินทางปัญญา</h2>
+                <p>
+                    แอป WinPhrase และเนื้อหาทั้งหมดที่เกี่ยวข้อง รวมถึงแต่ไม่จำกัดเพียง
+                    โลโก้ ไอคอน กราฟิก และซอฟต์แวร์ เป็นทรัพย์สินของ WinPhrase
+                    และได้รับการคุ้มครองตามกฎหมายลิขสิทธิ์และทรัพย์สินทางปัญญา
+                </p>
+
+                <h2>6. ข้อจำกัดความรับผิดชอบ</h2>
+                <p>
+                    <strong>แอปให้บริการ "ตามสภาพ" (AS IS)</strong> โดยไม่มีการรับประกันใดๆ ทั้งโดยชัดแจ้งหรือโดยนัย รวมถึงแต่ไม่จำกัดเพียง:
+                </p>
+                <ul>
+                    <li>การรับประกันความเหมาะสมสำหรับวัตถุประสงค์เฉพาะ</li>
+                    <li>การรับประกันว่าแอปจะทำงานได้อย่างต่อเนื่องหรือปราศจากข้อผิดพลาด</li>
+                    <li>การรับประกันว่าข้อบกพร่องจะได้รับการแก้ไข</li>
+                </ul>
+
+                <h2>7. การจำกัดความรับผิด</h2>
+                <p>
+                    ไม่ว่าในกรณีใดๆ WinPhrase จะไม่รับผิดชอบต่อความเสียหายใดๆ รวมถึงแต่ไม่จำกัดเพียง:
+                </p>
+                <ul>
+                    <li>ความเสียหายโดยตรง โดยอ้อม โดยบังเอิญ หรือเป็นผลสืบเนื่อง</li>
+                    <li>การสูญเสียข้อมูล กำไร หรือโอกาสทางธุรกิจ</li>
+                    <li>ความเสียหายที่เกิดจากการใช้งานหรือไม่สามารถใช้งานแอปได้</li>
+                </ul>
+
+                <h2>8. การเปลี่ยนแปลงข้อกำหนด</h2>
+                <p>
+                    เราขอสงวนสิทธิ์ในการแก้ไขหรือปรับปรุงข้อกำหนดเหล่านี้ได้ตลอดเวลา
+                    การใช้งานแอปต่อไปหลังจากมีการเปลี่ยนแปลงถือว่าคุณยอมรับข้อกำหนดที่แก้ไขแล้ว
+                </p>
+
+                <h2>9. การยกเลิก</h2>
+                <p>
+                    เราอาจยกเลิกหรือระงับสิทธิ์การใช้งานของคุณได้ทันทีโดยไม่ต้องแจ้งล่วงหน้า
+                    หากคุณละเมิดข้อกำหนดเหล่านี้ เมื่อสิทธิ์ถูกยกเลิก คุณต้องหยุดใช้งานและลบแอปออกจากอุปกรณ์ของคุณ
+                </p>
+
+                <h2>10. กฎหมายที่ใช้บังคับ</h2>
+                <p>
+                    ข้อกำหนดเหล่านี้อยู่ภายใต้กฎหมายของประเทศไทย
+                    ข้อพิพาทใดๆ ที่เกิดขึ้นจะอยู่ภายใต้เขตอำนาจของศาลไทย
+                </p>
+
+                <h2>11. ติดต่อเรา</h2>
+                <p>
+                    หากคุณมีคำถามเกี่ยวกับข้อกำหนดการใช้งานนี้ สามารถติดต่อเราได้ที่:
+                </p>
+                <ul>
+                    <li>Email: <a href="mailto:support@winphrase.app">support@winphrase.app</a></li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <a href="/" class="logo">WinPhrase</a>
+            <ul class="footer-links">
+                <li><a href="/privacy">นโยบายความเป็นส่วนตัว</a></li>
+                <li><a href="/terms">ข้อกำหนดการใช้งาน</a></li>
+                <li><a href="mailto:support@winphrase.app">ติดต่อเรา</a></li>
+            </ul>
+            <p class="footer-copy">© 2025 WinPhrase. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
