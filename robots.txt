@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # บอกที่อยู่ของ Sitemap ให้ Google รู้ทันที
-Sitemap: https://winphrase.app/sitemap.xml
+Sitemap: https://saeed04-dev.github.io/winphase/sitemap.xml
