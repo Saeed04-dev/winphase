@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>WinPhrase - โปรแกรมคีย์ลัดอัจฉริยะ (Text Expander) สำหรับ Windows | Official</title>
+    
+    <meta name="description" content="เพิ่มความเร็วในการทำงานด้วย WinPhrase โปรแกรมคีย์ลัดอัจฉริยะ (Text Expander) สำหรับ Windows 10/11 สร้างข้อความอัตโนมัติ ใช้งานง่าย เบาเครื่อง ดาวน์โหลดฟรีวันนี้!">
+    
+    <meta name="keywords" content="WinPhrase, โปรแกรมคีย์ลัด, Text Expander Windows, Snippet Manager, โปรแกรมพิมพ์เร็ว, คีย์ลัดภาษาไทย">
+    
+    <meta property="og:title" content="WinPhrase - โปรแกรมคีย์ลัดอัจฉริยะ (Text Expander)">
+    <meta property="og:description" content="พิมพ์เร็วขึ้น 10 เท่าด้วยระบบข้อความอัตโนมัติสำหรับ Windows">
+    <meta property="og:image" content="https://winphrase.app/og-image.png"> <meta property="og:url" content="https://winphrase.app/">
+    <meta property="og:type" content="website">
+    
+    <link rel="canonical" href="https://winphrase.app/">
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "WinPhrase",
+        "operatingSystem": "Windows 10, Windows 11",
+        "applicationCategory": "UtilitiesApplication",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "THB"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "5.0",
+            "ratingCount": "10"
+        },
+        "description": "WinPhrase is a professional text expander for Windows that helps you automate repetitive typing using custom hotkeys."
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================
+           🎨 CSS Variables & Theme
+           ============================================ */
+        :root {
+            --primary: #0078D4;
+            --primary-dark: #005A9E;
+            --accent: #00B294;
+            --accent-glow: rgba(0, 178, 148, 0.3);
+            --bg-dark: #0A0E17;
+            --bg-card: #111827;
+            --bg-card-hover: #1F2937;
+            --text-primary: #F9FAFB;
+            --text-secondary: #9CA3AF;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #0078D4 0%, #00B294 100%);
+            --gradient-mesh: radial-gradient(at 40% 20%, hsla(212,100%,50%,0.15) 0px, transparent 50%),
+                            radial-gradient(at 80% 0%, hsla(174,100%,50%,0.1) 0px, transparent 50%),
+                            radial-gradient(at 0% 50%, hsla(270,100%,50%,0.1) 0px, transparent 50%);
+        }
+
+        /* ============================================
+           🧹 Reset & Base
+           ============================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans Thai', -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ============================================
+           🎭 Background Effects
+           ============================================ */
+        .bg-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-mesh);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* ============================================
+           📦 Container & Layout
+           ============================================ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        section {
+            padding: 100px 0;
+        }
+
+        /* ============================================
+           🚀 Navigation
+           ============================================ */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 16px 0;
+            background: rgba(10, 14, 23, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .btn-nav {
+            background: var(--gradient-2);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 120, 212, 0.3);
+        }
+
+        /* ============================================
+           🦸 Hero Section
+           ============================================ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            position: relative;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 178, 148, 0.1);
+            border: 1px solid rgba(0, 178, 148, 0.3);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        /* H1 สำคัญมากสำหรับ SEO - ใส่ keyword หลัก */
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease 0.1s both;
+        }
+
+        h1 .highlight {
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            max-width: 500px;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.3s both;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--gradient-2);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0, 120, 212, 0.4);
+        }
+
+        .btn-primary svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: transparent;
+            color: var(--text-primary);
+            padding: 16px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.4);
+        }
+
+        .hero-image {
+            position: relative;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+        }
+
+        .hero-image::before {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            background: var(--gradient-2);
+            border-radius: 24px;
+            opacity: 0.1;
+            z-index: -1;
+            filter: blur(40px);
+        }
+
+        /* Placeholder for app screenshot */
+        .app-preview {
+            width: 100%;
+            aspect-ratio: 16/10;
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .app-preview::after {
+            content: '📱 ใส่ screenshot ของ app ตรงนี้';
+        }
+
+        /* ============================================
+           ✨ Features Section
+           ============================================ */
+        .features {
+            background: linear-gradient(180deg, transparent 0%, rgba(17, 24, 39, 0.5) 100%);
+        }
+
+        /* H2 ควรมี keyword รอง */
+        h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 60px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-2);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 178, 148, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(0, 178, 148, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        /* H3 ใช้สำหรับ sub-features */
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* ============================================
+           📖 Tutorial Section (สำคัญสำหรับ SEO!)
+           ============================================ */
+        .tutorial {
+            background: var(--bg-card);
+        }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+            padding: 32px;
+            background: var(--bg-dark);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.08);
+            position: relative;
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .step-content h3 {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+        }
+
+        .step-content p {
+            color: var(--text-secondary);
+        }
+
+        .step-image {
+            margin-top: 16px;
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .step-image code {
+            color: var(--accent);
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* ============================================
+           💬 FAQ Section (ดีสำหรับ SEO!)
+           ============================================ */
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 24px;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: inherit;
+        }
+
+        .faq-question::after {
+            content: '+';
+            font-size: 1.5rem;
+            color: var(--accent);
+            transition: transform 0.3s;
+        }
+
+        .faq-item.active .faq-question::after {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer p {
+            padding: 0 24px 24px;
+            color: var(--text-secondary);
+        }
+
+        /* ============================================
+           📥 Download CTA Section
+           ============================================ */
+        .download-cta {
+            text-align: center;
+            background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-dark) 100%);
+        }
+
+        .download-cta h2 {
+            margin-bottom: 24px;
+        }
+
+        .download-cta p {
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        .store-badges {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .ms-store-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #107C10;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .ms-store-badge:hover {
+            background: #0E6B0E;
+            transform: scale(1.05);
+        }
+
+        .ms-store-badge svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        /* ============================================
+           🦶 Footer
+           ============================================ */
+        footer {
+            padding: 60px 0;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-copy {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* ============================================
+           🎬 Animations
+           ============================================ */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* ============================================
+           📱 Responsive
+           ============================================ */
+        @media (max-width: 968px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-description {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-cta {
+                justify-content: center;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            section {
+                padding: 60px 0;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .step {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-mesh"></div>
+
+    <nav>
+        <div class="container">
+            <div class="logo">WinPhrase</div>
+            <ul class="nav-links">
+                <li><a href="#features">ฟีเจอร์ (Features)</a></li>
+                <li><a href="#tutorial">วิธีใช้งาน (Guide)</a></li>
+                <li><a href="#faq">คำถามที่พบบ่อย (FAQ)</a></li>
+            </ul>
+            <a href="https://apps.microsoft.com/detail/9n48hb315xjx?hl=th-TH&gl=TH" target="_blank" class="btn-primary" style="padding: 8px 20px; font-size: 0.9rem;">ติดตั้งฟรี</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="hero-badge">🚀 WinPhrase is now Live on Microsoft Store</div>
+                    <h1>
+                        โปรแกรมคีย์ลัดอัจฉริยะ<br>
+                        <span class="highlight">Text Expander</span> สำหรับ Windows
+                    </h1>
+                    <p class="hero-description">
+                        หยุดพิมพ์ข้อความเดิมซ้ำๆ! WinPhrase ช่วยคุณสร้างคีย์ลัดอัตโนมัติ (Custom Hotkeys) สำหรับที่อยู่, อีเมล, หรือชุดคำสั่ง AI ให้คุณทำงานเร็วขึ้นในทุกโปรแกรม
+                    </p>
+                    <div class="hero-cta">
+                        <a href="https://apps.microsoft.com/detail/9n48hb315xjx?hl=th-TH&gl=TH" target="_blank" class="btn-primary">
+                            ดาวน์โหลดจาก Microsoft Store (FREE)
+                        </a>
+                    </div>
+                </div>
+                <!-- <div class="hero-image">
+                    <div style=" background: #111827; aspect-ratio: 16/10; border-radius: 12px; border: 1px solid #374151; display: flex; align-items: center; justify-content: center;">
+                        <span style="color: #4B5563;">[ แนะนำให้ใส่ภาพ Screenshot แอป WinPhrase ]</span>
+                    </div>
+                </div> -->
+                <div class="hero-image">
+                    <img src="img.jpg" 
+                        alt="WinPhrase App Screenshot - โปรแกรมคีย์ลัดอัจฉริยะ" 
+                        style="width: 100%; border-radius: 12px; border: 1px solid #374151; box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+     <!-- Features Section -->
+    <section id="features">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 40px; font-size: 2.5rem;">ฟีเจอร์เด่น (Key Features)</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div style="font-size: 2rem; margin-bottom: 15px;">⚡</div>
+                    <h3>รวดเร็วและเบาเครื่อง (Lightweight)</h3>
+                    <p>พัฒนาด้วย WinUI 3 เทคโนโลยีล่าสุดจาก Microsoft ทำให้แอปทำงานได้ลื่นไหล ไม่กินทรัพยากรเครื่อง</p>
+                </div>
+                <div class="feature-card">
+                    <div style="font-size: 2rem; margin-bottom: 15px;">⌨️</div>
+                    <h3>ระบบ Global Hotkeys</h3>
+                    <p>ใช้งานได้ทุกที่ ไม่ว่าคุณจะพิมพ์อยู่ใน Word, Excel, Browser หรือ Discord เพียงกดคีย์ลัด ข้อความจะขึ้นทันที</p>
+                </div>
+                <div class="feature-card">
+                    <div style="font-size: 2rem; margin-bottom: 15px;">🔒</div>
+                    <h3>ปลอดภัย 100% (Secure)</h3>
+                    <p>ดาวน์โหลดอย่างมั่นใจผ่าน Microsoft Store ผ่านการตรวจสอบความปลอดภัยระดับสากล ปลอดมัลแวร์แน่นอน</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tutorial Section (สำคัญมากสำหรับ SEO!) -->
+    <section id="tutorial" class="tutorial">
+        <div class="container">
+            <h2>วิธีใช้งาน WinPhrase</h2>
+            <p class="section-subtitle">
+                เริ่มต้นใช้งานได้ง่ายๆ เพียง 3 ขั้นตอน
+            </p>
+            
+            <div class="steps">
+                <!-- Step 1 -->
+                <article class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>ดาวน์โหลดจาก Microsoft Store</h3>
+                        <p>
+                            คลิกปุ่ม "ดาวน์โหลด" หรือค้นหา "WinPhrase" ใน Microsoft Store 
+                            จากนั้นกด "Get" หรือ "ติดตั้ง" รอสักครู่ โปรแกรมจะติดตั้งอัตโนมัติ
+                        </p>
+                        <div class="step-image">
+                            💡 <strong>Tips:</strong> สามารถกด <code>Win + S</code> แล้วพิมพ์ "Microsoft Store" เพื่อเปิด Store ได้เลย
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Step 2 -->
+                <article class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>เปิดโปรแกรมและตั้งค่าเบื้องต้น</h3>
+                        <p>
+                            หลังติดตั้งเสร็จ เปิดโปรแกรมจาก Start Menu 
+                            ครั้งแรกจะมีหน้า Welcome ให้ตั้งค่าพื้นฐานตามที่ต้องการ
+                        </p>
+                        <div class="step-image">
+                            💡 <strong>Tips:</strong> สามารถกลับมาแก้ไขการตั้งค่าได้ภายหลังที่เมนู Settings
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Step 3 -->
+                <article class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>เริ่มใช้งานได้เลย!</h3>
+                        <p>
+                            1.สร้าง โฟรเดอร์ใน เมนู Phrases จะมีช่องให้ใส่ชื่อ แล้วกด + <br>
+                            2.สร้าง คีย์ลัด ที่เมนู Hotkeys กดสร้างและทำตามขั้นตอนได้เลย <br>
+                            3.กดได้ทั้ง F1-F10 หรือขึ้นต้นด้วย Ctrl หรือ Alt แล้วแต่สะดวกเลย <br>
+                            4.ทดสอบกดคีย์ลัดในโปรแกรมใดก็ได้ ข้อความจะปรากฏขึ้นทันที! <br>
+                            เพียงเท่านี้คุณก็พร้อมใช้งาน WinPhrase แล้ว!
+                        </p>
+                        <div class="step-image">
+                            💡 <strong>Tips:</strong> กด <code>Alt + Spacebar</code> เพื่อดู คีย์ลัดทั้งหมดที่เราตั้งได้
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+<!-- FAQ Section (ดีมากสำหรับ SEO!) -->
+    <section id="faq">
+        <div class="container">
+            <h2>คำถามที่พบบ่อย</h2>
+            <p class="section-subtitle">
+                รวมคำตอบสำหรับคำถามยอดนิยมเกี่ยวกับ WinPhrase
+            </p>
+            
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        WinPhrase ใช้ฟรีจริงไหม?
+                    </button>
+                    <div class="faq-answer">
+                        <p>
+                            ใช่ครับ/ค่ะ! WinPhrase ให้ดาวน์โหลดและใช้งานฟรีตลอดชีพ 
+                            ไม่มีค่าใช้จ่ายใดๆ ทั้งสิ้น ดาวน์โหลดได้เลยจาก Microsoft Store
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        รองรับ Windows เวอร์ชันอะไรบ้าง?
+                    </button>
+                    <div class="faq-answer">
+                        <p>
+                            WinPhrase รองรับ Windows 10 (version 1903 ขึ้นไป) และ Windows 11 ทุกเวอร์ชัน 
+                            ทำงานได้ทั้งบน x64 และ ARM64
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        ปลอดภัยไหม? มีไวรัสหรือเปล่า?
+                    </button>
+                    <div class="faq-answer">
+                        <p>
+                            ปลอดภัย 100%! แอปทุกตัวที่อยู่บน Microsoft Store 
+                            ต้องผ่านการตรวจสอบความปลอดภัยจาก Microsoft ก่อน 
+                            คุณจึงมั่นใจได้ว่าปลอดไวรัสและมัลแวร์
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        ติดตั้งไม่ได้ ต้องทำอย่างไร?
+                    </button>
+                    <div class="faq-answer">
+                        <p>
+                            ลองทำตามขั้นตอนนี้: 1) รีสตาร์ท Microsoft Store 
+                            2) ตรวจสอบว่า Windows อัพเดทล่าสุดแล้ว 
+                            3) ลอง Reset Microsoft Store ใน Settings > Apps 
+                            หากยังไม่ได้ ติดต่อเราได้เลย!
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        จะติดต่อทีมงานได้อย่างไร?
+                    </button>
+                    <div class="faq-answer">
+                        <p>
+                            สามารถติดต่อเราได้ทาง: Email: support@yourapp.com 
+                            หรือส่ง Feedback ผ่านในแอปได้เลย เราพร้อมช่วยเหลือคุณเสมอ!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download CTA -->
+    <section id="download" class="download-cta">
+        <div class="container">
+            <h2>พร้อมใช้งานแล้ว?</h2>
+            <p>ดาวน์โหลด WinPhrase ฟรีวันนี้ และเริ่มต้น [ประโยชน์] ได้ทันที!</p>
+            
+            <div class="store-badges">
+                <a href="https://apps.microsoft.com/detail/9n48hb315xjx?hl=th-TH&gl=TH" class="ms-store-badge">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 12V6.75l6-1.32v6.48L3 12zm17-9v8.75l-10 .15V5.21L20 3zM3 13l6 .09v6.81l-6-1.15V13zm17 .25V22l-10-1.91V13.1l10 .15z"/>
+                    </svg>
+                    ดาวน์โหลดจาก Microsoft Store
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo">WinPhrase</div>
+                <ul class="footer-links">
+                    <li><a href="/privacy">นโยบายความเป็นส่วนตัว</a></li>
+                    <li><a href="/terms">ข้อกำหนดการใช้งาน</a></li>
+                    <li><a href="mailto:support@yourapp.com">ติดต่อเรา</a></li>
+                </ul>
+                <p class="footer-copy">© 2025 WinPhrase. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Script สำหรับ FAQ Toggle
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const item = button.parentElement;
+                item.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
